@@ -1,7 +1,5 @@
-// Recursion Assignment
-
 // 1) Counting Sheep
-// Write a recursive function that counts how many sheep jump over the fence. Your program should take a number as input. That number should be the number of sheep you have. The function should display the number along with the message "Another sheep jumps over the fence" until no more sheep are left.
+// Write an recursive/iterative function that counts how many sheep jump over the fence. Your program should take a number as input. That number should be the number of sheep you have. The function should display the number along with the message "Another sheep jumps over the fence" until no more sheep are left.
     // Input:3
     // Output:
     // 3: Another sheep jumps over the fence
@@ -9,6 +7,8 @@
     // 1: Another sheep jumps over the fence
     // All sheep jumped over the fence
 
+    // recursion
+    // Big O - O(n) directly proportionate to input
     const sheepText = function(numSheep) {
         if (numSheep === 0) {
             return 'All sheep jumped over the fence' 
@@ -16,6 +16,18 @@
         return `${numSheep}: Another sheep jumps over the fence \n` + sheepText(numSheep-1)
     }
     console.log(sheepText(3))
+    
+    // iteration
+    // Big O - O(n)
+    function sheepCount(num){
+        count =0;
+        for (let i=0;i<num;i++) {
+            count++;
+            console.log(`${count}: Another sheep jumps over the fence \n`)
+        }
+        return `All ${num} sheep jumped over the fence`
+    }
+    console.log(sheepCount(3))
 
 
 // 2) Power Calculator
@@ -23,6 +35,8 @@
     // powerCalculator(10,2) should return 100
     // powerCalculator(10,-2) should return exponent should be >= 0
     
+    // recursion
+    // Big O - O(n)+O(n^k) = O(n+n^k)
     const powerCalculator = function(base, exponent) {
         if (exponent == 0) {
             return 1
@@ -37,8 +51,44 @@
     }
     console.log(powerCalculator(10,2))
 
+    // iteration
+    // Big O - O(n)
+    function toThePowerIt(base,exponent){
+        const exp = Math.abs(exponent)
+        if (exponent > 0){
+          let count = 1;
+          let answer = base;
+          console.log(exponent)
+          while (count < exp){
+            count++
+            console.log(count)
+            answer = answer*base
+          }
+            return answer;  
+        }  
+        if (exponent < 0) {
+          let count = 1;
+          let answer = base;
+          while (count < exp){
+            count++
+            console.log(count)
+            answer = answer*base
+            console.log(answer)
+          }
+            return (1/answer);
+        }
+        if (exponent === 0){
+          return 1
+        }
+          
+      }
+      console.log(toThePowerIt(5,-5))
+
 // 3) Reverse String
 // Write a function that reverses a string. Take a string as input, reverse the string, and return the new string.
+    
+    // recursion
+    // Big O - O(n)
     const stringReverse = function(string) {
         if (string === "") {
             return ""
@@ -46,8 +96,25 @@
         return stringReverse(string.substr(1)) + string.charAt(0)
     }
 
+    // iteration
+    // Big O - O(n)
+    function stringReverseIt(string) {
+        if (string === "") {
+            return ""
+        }
+        let newStr = ''
+        for (let i=0; i<string.length; i++) {
+            newStr = string[i]+newStr
+        }
+        return newStr
+    }
+
+    console.log(stringReverseIt('hello there'))
+
 // 4) nth Triangular Number
 // Calculate the nth triangular number. A triangular number counts the objects that can form an equilateral triangle. The nth triangular number is the number of dots composing a triangle with n dots on a side, and is equal to the sum of the n natural numbers from 1 to n. This is the Triangular Number Sequence: 1, 3, 6, 10, 15, 21, 28, 36, 45.
+    // recursion
+    // Big O - O(n)
     const triNum = function(nth) {
         // T6 = 1+2+3+4+5+6 = 21
         if (nth === 0){
@@ -57,11 +124,28 @@
     }
     console.log(triNum(5))
 
+    // iteration
+    // Big O - O(n)
+    function triNumIt(nth) {
+        // T6 = 1+2+3+4+5+6 = 21
+        if (nth === 0){
+            return 0
+        }
+        let sum = 0;
+        for (let i=0; i<nth+1; i++){
+          sum = sum+i;
+        }
+        return sum
+    }
+    console.log(triNumIt(6))
+
 // 5) String Splitter
 // Write a recursive function that splits a string based on a separator (similar to String.prototype.split). Don't use JS array's split function to solve this problem.
     // Input: 02/20/2020
     // Output: ["02", "20", "2020"]
 
+    // Recursion
+    // Big O - O(n)
     const splitSeparator = function(string, strArr=[]) {
 
         if (string.indexOf('/') === -1) {
@@ -75,17 +159,105 @@
       }
       
       console.log(splitSeparator('02/20/2020'))
+    
+    // Iteration
+    // Big O - O(n)
+    function splitSeparatorIt(string) {
+  
+        start = 0;
+        strArr = [];
+        for (let i=0; i<=string.length; i++){
+          if (i==string.length){
+            strArr.push(string.substring(start,i))
+          }
+          else if (isNaN(string[i])){
+            strArr.push(string.substring(start,i))
+            start = i+1;
+          }
+          
+        }
+        return strArr
+      }
+      
+      console.log(splitSeparatorIt('02/20/2020'))
 
 // 6) Fibonacci
 // Write a recursive function that finds the factorial of a given number. The factorial of a number can be found by multiplying that number by each number between itself and 1. For example, the factorial of 5 is 5 * 4 * 3 * 2 * 1 = 120.
-    const fib = function(n) {
-        if (n === 0) {
-            return 1
+    
+    // recursion
+    // Big O - O(n)
+    function fibonacci(num) {
+    
+        if (num === 1) {
+        return [1]
         }
-        return n * fib(n-1)
+        if (num === 2) {
+        return [1,1]
+        }
+    
+        arr= fibonacci(num-1);
+        arr.push(arr[num-2] + arr[num-3])
+    
+        return arr  
     }
-  
-    console.log(fib(5))
+    console.log(fibonacci(7))
+
+    // two different methods for iteration
+    // Big O - O(n)
+    function fibIt(n) {
+        let a=1;
+        let b=1;
+        let cur;
+      
+        while (n>0){
+          cur = a;
+          a = a+b;
+          b = cur;
+          n--
+        }
+        return b
+      }
+      
+    console.log(fibIt(7))
+      
+    function fibIt(n) {
+        let arr = [1,1]
+        
+        for (let i=2; i<n; i++){
+            arr.push(arr[i-2]+arr[i-1])
+        }
+        return arr
+    }
+    console.log(fibIt(7))
+    
+
+
+// 7) Factorial
+// Write a recursive function that finds the factorial of a given number. The factorial of a number can be found by multiplying that number by each number between itself and 1. For example, the factorial of 5 is 5 * 4 * 3 * 2 * 1 = 120.
+
+    // recursion
+    // Big O - O(n)+O(log(n))=O(n+log(n))
+    const factorial = function(num){
+        if(num===0){
+        return 1
+        }
+        if (num>0){
+        return  num*factorial(num-1)
+        }  
+    }
+    console.log(factorial(3))
+
+    // iteration
+    // Big O - O(n^k)
+    function factorialIt(num){
+        let factorial = 1
+        for (let i=1; i<num; i++){
+          factorial = factorial*(i+1)
+        }
+        return factorial
+    }
+    console.log(factorialIt(5))
+
 
 // 8) Find a way out of the maze
 // You have entered a Maze and need to find your way out of it. There are more than one possible paths through the Maze to the single exit point. Write a recursive function that will help you find a possible path though the maze.
@@ -370,3 +542,6 @@ const binaryConversion = function(num,binaryNum=''){
 }
 
 console.log(binaryConversion(17))
+
+
+
